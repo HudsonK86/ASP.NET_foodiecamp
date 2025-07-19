@@ -1,0 +1,49 @@
+/* User-specific sidebar */
+.user-sidebar {
+    width: 280px;
+    min-height: 100vh;
+    top: 64px; /* Account for fixed header */
+    padding-bottom: 120px; /* Space for logout button and profile section */
+}
+
+/* Custom profile image size */
+.w-15 {
+    width: 3.75rem; /* 60px */
+}
+
+.h-15 {
+    height: 3.75rem; /* 60px */
+}
+
+.user-main-content {
+    margin-left: 280px;
+    padding-top: 64px; /* Account for fixed header */
+}
+
+.chart-container {
+    height: 400px;
+}
+
+@media (max-width: 768px) {
+    .user-sidebar {
+        width: 100%;
+        position: fixed;
+        top: 64px; /* Account for fixed header on mobile too */
+        left: -100%;
+        z-index: 50;
+        transition: left 0.3s ease;
+    }
+            
+    .user-sidebar.open {
+        left: 0;
+    }
+
+    .user-main-content {
+        margin-left: 0;
+    }
+    
+    /* Ensure footer doesn't have left margin on mobile */
+    footer {
+        margin-left: 0 !important;
+    }
+}

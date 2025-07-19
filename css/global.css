@@ -1,0 +1,54 @@
+/* Global styles for all pages */
+:root {
+    --primary-blue: #E6F2FF;
+    --dark-blue: #2563eb;
+    --text-gray: #374151;
+}
+        
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+        
+.bg-primary-blue {
+    background-color: var(--primary-blue);
+}
+        
+.text-primary-blue {
+    color: var(--primary-blue);
+}
+        
+.border-primary-blue {
+    border-color: var(--primary-blue);
+}
+        
+.hero-bg {
+    background: linear-gradient(135deg, rgba(230, 242, 255, 0.9), rgba(37, 99, 235, 0.1));
+}
+        
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Generic sidebar and main content classes for shared functionality */
+.sidebar {
+    position: fixed;
+    background: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+    min-height: 100vh;
+    background: #f9fafb;
+}
+
+/* Generic responsive behavior */
+@media (max-width: 768px) {
+    .sidebar {
+        transition: left 0.3s ease;
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+}

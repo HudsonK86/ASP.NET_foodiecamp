@@ -1,0 +1,183 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Hope.Site" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoodieCamp - <%: Page.Title %></title>
+    
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+  
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"> 
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <form id="form1" runat="server">
+        <!-- Add ScriptManager for jQuery validation -->
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+            
+        </asp:ScriptManager>
+        
+        <!-- Navigation Bar -->
+        <nav class="bg-white shadow-lg fixed w-full top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <i class="fas fa-utensils text-2xl text-blue-600 mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">FoodieCamp</span>
+                    </div>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="home.aspx" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="about.aspx" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <a href="recipes.aspx" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Recipe</a>
+                        <a href="events.aspx" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Event</a>
+                        <a href="contact.aspx" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                        
+                        <!-- Show Login button if user is not logged in -->
+                        <asp:Panel ID="LoginPanel" runat="server" Visible="true">
+                            <a href="login.aspx" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Login</a>
+                        </asp:Panel>
+                        
+                        <!-- Show User menu if user is logged in -->
+                        <asp:Panel ID="UserPanel" runat="server" Visible="false">
+                            <div class="relative">
+                                <button type="button" onclick="toggleUserMenu()" class="flex items-center text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium" title="User menu">
+                                    <asp:Image ID="UserProfileImage" runat="server" 
+                                        ImageUrl="https://via.placeholder.com/24x24" 
+                                        AlternateText="Profile"
+                                        CssClass="w-6 h-6 rounded-full mr-2" />
+                                    <span>Hello, <asp:Label ID="UserNameLabel" runat="server" Text="User"></asp:Label></span>
+                                    <!-- Notification bell for User role only -->
+                                    <asp:Panel ID="NotificationPanel" runat="server" CssClass="relative ml-3" Visible="false">
+                                        <a href="user-notification.aspx" class="relative flex items-center group" title="Notifications">
+                                            <span class="relative">
+                                                <i class="fas fa-bell text-2xl text-blue-500 group-hover:text-blue-700 transition duration-150"></i>
+                                                <asp:Label ID="NotificationCountLabel" runat="server" 
+                                                    CssClass="absolute -top-4 -right-4 bg-red-500 text-white text-xs min-w-[1.6rem] h-6 flex items-center justify-center rounded-full font-bold shadow-lg border-2 border-white transition-all duration-150" 
+                                                    Style="padding: 0 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size: 0.95rem; line-height: 1.3rem;" 
+                                                    Visible="false"></asp:Label>
+                                            </span>
+                                        </a>
+                                    </asp:Panel>
+                                    <i class="fas fa-chevron-down ml-1"></i>
+                                </button>
+                                <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-50">
+                                    <asp:LinkButton ID="DashboardButton" runat="server" OnClick="DashboardButton_Click" 
+                                        CssClass="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                                    </asp:LinkButton>
+                                    <div class="border-t border-gray-200"></div>
+                                    <asp:LinkButton ID="LogoutButton" runat="server" OnClick="LogoutButton_Click" 
+                                        CssClass="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                    </asp:LinkButton>
+                                </div>
+                            </div>
+                        </asp:Panel>
+
+                    </div>
+                    <div class="md:hidden">
+                        <button onclick="toggleMobileMenu()" class="text-gray-700" title="Toggle menu">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden fixed inset-x-0 top-16 bg-white shadow-lg z-30 hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="home.aspx" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Home</a>
+                <a href="about.aspx" class="block px-3 py-2 text-gray-700 hover:text-blue-600">About</a>
+                <a href="recipes.aspx" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Recipe</a>
+                <a href="events.aspx" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Event</a>
+                <a href="contact.aspx" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Contact</a>
+        
+                <!-- Add the missing Mobile Login Panel -->
+                <asp:Panel ID="MobileLoginPanel" runat="server" Visible="true">
+                    <div class="border-t border-gray-200 mt-2 pt-2">
+                        <a href="login.aspx" class="block px-3 py-2 bg-blue-600 text-white text-center rounded-md mx-3 hover:bg-blue-700 transition">Login</a>
+                    </div>
+                </asp:Panel>
+        
+                <!-- Mobile Login/User section -->
+                <asp:Panel ID="MobileUserPanel" runat="server" Visible="false">
+                    <div class="border-t border-gray-200 mt-2 pt-2">
+                        <div class="flex items-center px-3 py-2">
+                            <asp:Image ID="MobileUserProfileImage" runat="server" 
+                                ImageUrl="https://via.placeholder.com/32x32" 
+                                AlternateText="Profile"
+                                CssClass="w-8 h-8 rounded-full mr-3" />
+                            <span class="font-medium text-gray-800">Hello, <asp:Label ID="MobileUserNameLabel" runat="server" Text="User"></asp:Label></span>
+                        </div>
+                        <asp:LinkButton ID="MobileDashboardButton" runat="server" OnClick="DashboardButton_Click" 
+                            CssClass="block w-full text-left px-3 py-2 text-blue-600 font-medium">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                        </asp:LinkButton>
+                        <asp:LinkButton ID="MobileLogoutButton" runat="server" OnClick="LogoutButton_Click" 
+                            CssClass="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </asp:LinkButton>
+                    </div>
+                </asp:Panel>
+            </div>
+        </div>
+
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <p>&copy; 2024 FoodieCamp. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <script>
+            function toggleMobileMenu() {
+                const mobileMenu = document.getElementById('mobile-menu');
+                mobileMenu.classList.toggle('hidden');
+            }
+
+            function toggleUserMenu() {
+                const userMenu = document.getElementById('user-menu');
+                userMenu.classList.toggle('hidden');
+            }
+
+            // Close user menu when clicking outside
+            document.addEventListener('click', function (event) {
+                const userMenu = document.getElementById('user-menu');
+                const userMenuButton = event.target.closest('.relative');
+
+                // If clicked outside the user menu area, close it
+                if (!userMenuButton || !userMenuButton.querySelector('button[onclick*="toggleUserMenu"]')) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+
+            // Handle window resize for mobile responsiveness
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) {
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+
+            // Prevent dropdown from closing when clicking inside it
+            document.addEventListener('click', function (event) {
+                if (event.target.closest('#user-menu')) {
+                    event.stopPropagation();
+                }
+            });
+        </script>
+    </form>
+</body>
+</html>

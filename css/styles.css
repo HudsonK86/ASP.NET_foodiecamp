@@ -1,0 +1,7 @@
+/* Import all CSS modules */
+@import 'global.css';
+@import 'admin-dashboard.css';
+@import 'user-dashboard.css';
+@import 'event-details.css';
+@import 'recipe-details.css';
+
