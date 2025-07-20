@@ -95,7 +95,7 @@ namespace Hope
                             Event = new EventDetailModel
                             {
                                 EventId = eventId,
-                                UserId = Convert.ToInt32(reader["user_id"]), // <-- Add this line
+                                UserId = Convert.ToInt32(reader["user_id"]),
                                 EventTitle = reader["event_title"].ToString(),
                                 EventDescription = reader["event_description"]?.ToString() ?? "",
                                 EventImageUrl = !string.IsNullOrEmpty(reader["event_image"].ToString())
@@ -111,14 +111,23 @@ namespace Hope
                                 Location = reader["location"].ToString(),
                                 Organizer = $"{reader["firstname"]} {reader["lastname"]}",
                                 Contact = reader["phone_number"]?.ToString() ?? "",
-                                LearningObjectives = new List<string> { "Traditional Asian cooking techniques", "Flavor balancing and seasoning", "Modern presentation techniques", "Knife skills and food preparation", "Recipe adaptations for home cooking" },
-                                IncludedItems = new List<string> { "All cooking equipment and ingredients", "Recipe booklet to take home", "Welcome drink and refreshments", "Professional photos of your dishes", "Certificate of completion" },
-                                Requirements = new List<string> { "No prior cooking experience required", "Comfortable clothing recommended", "Closed-toe shoes required", "Please arrive 15 minutes early", "Passion for learning and food!" }
+                                LearningObjectives = SplitLines(reader["learning_objective"].ToString()),
+                                IncludedItems = SplitLines(reader["included_item"].ToString()),
+                                Requirements = SplitLines(reader["requirement"].ToString())
                             };
                         }
                     }
                 }
             }
+        }
+
+        // Helper to split by new line or comma
+        private List<string> SplitLines(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return new List<string>();
+            return new List<string>(
+                input.Replace("\r\n", "\n").Replace('\r', '\n').Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
+            );
         }
 
         private int GetParticipantCount(int eventId)
@@ -205,7 +214,7 @@ namespace Hope
         public class EventDetailModel
         {
             public int EventId { get; set; }
-            public int UserId { get; set; } 
+            public int UserId { get; set; }
             public string EventTitle { get; set; }
             public string EventDescription { get; set; }
             public string EventImageUrl { get; set; }

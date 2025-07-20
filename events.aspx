@@ -3,9 +3,22 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-   <div class="pt-16">
+    <!-- Admin Event Error Message (styled like home page message panel, fixed and centered) -->
+    <div id="adminEventErrorPanel" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-50" style="display:none;">
+        <div class="bg-red-50 border border-red-200 text-red-800 px-6 py-4 rounded-lg shadow-lg max-w-md mx-auto">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-triangle text-red-600 mr-3"></i>
+                <span class="font-medium">Admin can't post event.</span>
+                <button type="button" onclick="closeAdminEventError()" class="ml-4 text-red-600 hover:text-red-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="pt-16">
         <!-- Events Grid -->
-         <div class="py-16 bg-white">
+        <div class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4">
                 <h1 class="text-4xl font-bold text-center text-gray-800 mb-12">Explore Events by Category</h1>
                 
@@ -49,15 +62,15 @@
                                 placeholder="Search events..."
                                 AutoPostBack="true" OnTextChanged="Filter_Changed" />
                         </div>
-                        <!-- Post Event Button -->
+                        <!-- Post Event Button (always visible) -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">&nbsp;</label>
-                            <% if (Session["UserId"] != null && (Session["UserRole"] == null || Session["UserRole"].ToString() == "User")) { %>
-                                <a href="post-event.aspx" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 flex items-center justify-center">
-                                    <i class="fas fa-plus mr-2"></i>
-                                    Post Event
-                                </a>
-                            <% } %>
+                            <a href="post-event.aspx"
+                               id="postEventBtn"
+                               class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+                                <i class="fas fa-plus mr-2"></i>
+                                Post Event
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -68,9 +81,9 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="events-grid">
                     </HeaderTemplate>
                     <ItemTemplate>
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden event-card mb-4">
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden event-card mb-4 flex flex-col h-full" style="min-height: 430px;">
                             <div class="relative">
-                                <img src='<%# Eval("EventImageUrl") %>' alt='<%# Eval("EventTitle") %>' class="w-full h-48 object-cover" />
+                                <img src='<%# Eval("EventImageUrl") %>' alt='<%# Eval("EventTitle") %>' class="w-full h-48 object-cover" style="height: 192px;" />
                                 <div class="absolute top-2 right-2">
                                     <span class='<%# Eval("TimeBadgeClass") %> px-2 py-1 rounded-full text-xs font-medium'>
                                         <i class='<%# Eval("TimeBadgeIcon") %> mr-1'></i>
@@ -78,7 +91,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="p-4">
+                            <div class="p-4 flex flex-col flex-1">
                                 <h3 class="event-title text-xl font-semibold text-gray-800 mb-3"><%# Eval("EventTitle") %></h3>
                                 <div class="event-details space-y-2 text-sm mb-4">
                                     <p class="event-date text-gray-600">
@@ -98,8 +111,8 @@
                                         <span class="participant-count"><%# Eval("ParticipantCount") %>/<%# Eval("MaxParticipant") %></span> participants
                                     </p>
                                 </div>
-                                <div class="flex space-x-2">
-                                    <a href='event-detail.aspx?id=<%# Eval("EventId") %>' class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg text-center transition-colors">
+                                <div class="flex space-x-2 mt-auto">
+                                    <a href='event-detail.aspx?id=<%# Eval("EventId") %>' class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg text-center transition-colors">
                                         View Details
                                     </a>
                                 </div>
@@ -139,4 +152,34 @@
             </div>
         </div>
     </div>
+
+    <!-- Hidden Inputs for JavaScript Logic -->
+    <input type="hidden" id="is-logged-in" value="<%= (Session["IsLoggedIn"] != null && (bool)Session["IsLoggedIn"]) ? "1" : "0" %>" />
+    <input type="hidden" id="user-role" value="<%= Session["UserRole"] != null ? Session["UserRole"].ToString() : "" %>" />
+    <script>
+function closeAdminEventError() {
+    var panel = document.getElementById('adminEventErrorPanel');
+    if (panel) panel.style.display = 'none';
+}
+document.addEventListener('DOMContentLoaded', function () {
+    var postBtn = document.getElementById('postEventBtn');
+    var isLoggedIn = document.getElementById('is-logged-in').value === "1";
+    var userRole = document.getElementById('user-role').value;
+    var errorPanel = document.getElementById('adminEventErrorPanel');
+    if (postBtn) {
+        postBtn.addEventListener('click', function (e) {
+            if (!isLoggedIn) {
+                e.preventDefault();
+                window.location = 'login.aspx';
+            } else if (userRole === "Admin") {
+                e.preventDefault();
+                if (errorPanel) {
+                    errorPanel.style.display = "block";
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        });
+    }
+});
+</script>
 </asp:Content>

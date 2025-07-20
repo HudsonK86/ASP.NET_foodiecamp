@@ -38,12 +38,12 @@
                         
                         <!-- Post Recipe Button -->
                         <div>
-                            <% if (Session["IsLoggedIn"] != null && (bool)Session["IsLoggedIn"]) { %>
-                                <a href="post-recipe.aspx" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 flex items-center justify-center">
-                                    <i class="fas fa-plus mr-2"></i>
-                                    Post Recipe
-                                </a>
-                            <% } %>
+                            <a href="post-recipe.aspx"
+                               class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 flex items-center justify-center"
+                               id="postRecipeBtn">
+                                <i class="fas fa-plus mr-2"></i>
+                                Post Recipe
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -52,13 +52,13 @@
                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="bookmarks-grid">
                     <asp:Repeater ID="RecipesRepeater" runat="server">
                         <ItemTemplate>
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden recipe-card mb-4">
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden recipe-card mb-4 flex flex-col h-full" style="min-height: 430px;">
                                 <div class="relative">
-                                    <img src='<%# Eval("RecipeImageUrl") %>' alt='<%# Eval("RecipeName") %>' class="w-full h-48 object-cover" />
+                                    <img src='<%# Eval("RecipeImageUrl") %>' alt='<%# Eval("RecipeName") %>' class="w-full h-48 object-cover" style="height: 192px;" />
                                     <%# ((bool)Eval("ShowBookmark") && (bool)Eval("IsBookmarked")) ? "<span class='bg-white bg-opacity-90 text-gray-700 px-2 py-1 rounded-full text-xs font-medium absolute top-2 right-2 flex items-center'><i class=\"fas fa-bookmark text-blue-600 mr-1\"></i>Bookmarked</span>" : "" %>
                                     <%# ((bool)Eval("ShowCompleted") && (bool)Eval("IsCompleted")) ? "<span class='bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium absolute top-2 left-2 flex items-center'><i class='fas fa-check mr-1'></i>Completed</span>" : "" %>
                                 </div>
-                                <div class="p-4">
+                                <div class="p-4 flex flex-col flex-1">
                                     <h3 class="text-lg font-semibold text-gray-800 mb-2"><%# Eval("RecipeName") %></h3>
                                     <div class="flex items-center text-sm text-gray-600 mb-2">
                                         <i class="fas fa-user mr-2 text-blue-600"></i>
@@ -74,7 +74,7 @@
                                         </div>
                                         <span class="ml-2 text-gray-600 text-sm"><%# Eval("AverageRatingText") %></span>
                                     </div>
-                                    <div class="flex space-x-2">
+                                    <div class="flex space-x-2 mt-auto">
                                         <a href='recipe-detail.aspx?id=<%# Eval("RecipeId") %>' class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg text-center transition-colors">
                                             View Recipe
                                         </a>
@@ -112,6 +112,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="is-logged-in" value="<%= (Session["IsLoggedIn"] != null && (bool)Session["IsLoggedIn"]) ? "1" : "0" %>" />
     <script>
     // Set cuisine filter from query string on page load
     window.addEventListener('DOMContentLoaded', function () {
@@ -122,6 +123,19 @@
             if (select) {
                 select.value = cuisine;
             }
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var postBtn = document.getElementById('postRecipeBtn');
+        var isLoggedIn = document.getElementById('is-logged-in').value === "1";
+        if (postBtn) {
+            postBtn.addEventListener('click', function (e) {
+                if (!isLoggedIn) {
+                    e.preventDefault();
+                    window.location = 'login.aspx';
+                }
+            });
         }
     });
     </script>

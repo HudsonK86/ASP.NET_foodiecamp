@@ -372,14 +372,15 @@ namespace Hope
                 case "ViewUserRecipe":
                     Response.Redirect($"~/recipe-detail.aspx?id={recipeId}");
                     break;
+                case "EditRecipe":
+                    Response.Redirect($"~/edit-recipe.aspx?id={recipeId}");
+                    break;
                 case "ApproveRecipe":
-                    // Direct approval without modal
                     UpdateRecipeStatus(recipeId, "Approved");
                     SaveApprovalNotification(recipeId);
                     ShowSuccessMessage("Recipe approved successfully!");
                     break;
                 case "RejectRecipe":
-                    // Show reject modal
                     ShowRejectModal(recipeId);
                     break;
             }

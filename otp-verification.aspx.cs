@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.UI;
+using System.Net.Mail;
 
 namespace Hope
 {
@@ -124,8 +125,9 @@ namespace Hope
                     Session["OTP"] = newOtp;
                     Session["OTPTime"] = DateTime.Now;
 
-                    // TODO: Resend email with new OTP
-                    // For now, just show success message
+                    // Send the OTP email
+                    SendOtpEmail(email, newOtp);
+
                     ShowMessage("New verification code sent to your email!", true);
                 }
                 else
@@ -245,6 +247,65 @@ namespace Hope
                         messageParagraph.innerHTML = '<i class=""{icon} mr-2""></i>{message}';
                     }}
                 }});", true);
+        }
+
+        private void SendOtpEmail(string userEmail, string otp)
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress("sharingiscaring6688@gmail.com", "FoodieCamp");
+                mail.To.Add(userEmail);
+                mail.Subject = "FoodieCamp - Email Verification Code";
+                mail.Body = $@"
+                <html>
+                <body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+                    <div style='background-color: #f8f9fa; padding: 20px; text-align: center;'>
+                        <h2 style='color: #2563eb; margin-bottom: 10px;'>
+                            🍽️ FoodieCamp
+                        </h2>
+                        <h3 style='color: #374151;'>Email Verification</h3>
+                    </div>
+                    <div style='padding: 30px; background-color: white; border: 1px solid #e5e7eb;'>
+                        <p style='color: #374151; font-size: 16px;'>
+                            Please verify your email with this code:
+                        </p>
+                        <div style='text-align: center; margin: 30px 0;'>
+                            <div style='background-color: #eff6ff; border: 2px solid #2563eb; 
+                                       border-radius: 8px; padding: 20px; display: inline-block;'>
+                                <p style='margin: 0; font-size: 36px; font-weight: bold; 
+                                         color: #2563eb; letter-spacing: 8px; font-family: monospace;'>
+                                    {otp}
+                                </p>
+                            </div>
+                        </div>
+                        <p style='color: #6b7280; font-size: 14px; text-align: center;'>
+                            This code expires in 5 minutes.
+                        </p>
+                        <p style='color: #6b7280; font-size: 12px; text-align: center; margin-top: 20px;'>
+                            If you didn't request this verification, please ignore this email.
+                        </p>
+                    </div>
+                    <div style='background-color: #f8f9fa; padding: 15px; text-align: center; 
+                               border-top: 1px solid #e5e7eb;'>
+                        <p style='color: #9ca3af; font-size: 12px; margin: 0;'>
+                            © 2024 FoodieCamp. All rights reserved.
+                        </p>
+                    </div>
+                </body>
+                </html>";
+                mail.IsBodyHtml = true;
+
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new System.Net.NetworkCredential("sharingiscaring6688@gmail.com", "pzik pfzv arqu souv");
+                smtp.EnableSsl = true;
+
+                smtp.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Resend OTP Email Error: {ex.Message}");
+            }
         }
     }
 }

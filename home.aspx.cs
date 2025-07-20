@@ -12,6 +12,9 @@ namespace Hope
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Always update event statuses before anything else
+            UpdateEventStatuses();
+
             if (!IsPostBack)
             {
                 // Check for login success message
@@ -31,6 +34,43 @@ namespace Hope
                 // Load cuisines from database
                 LoadCuisines();
                 LoadHomeEvents();
+            }
+        }
+
+        // Add this method to update event statuses
+        private void UpdateEventStatuses()
+        {
+            try
+            {
+                string cs = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+                using (var conn = new SqlConnection(cs))
+                {
+                    conn.Open();
+
+                    // Pending -> Expired if start_date = today
+                    string updatePending = @"
+                        UPDATE Event
+                        SET event_status = 'Expired'
+                        WHERE event_status = 'Pending' AND start_date = CAST(GETDATE() AS DATE)";
+                    using (var cmd = new SqlCommand(updatePending, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Approved -> Completed if start_date = today
+                    string updateApproved = @"
+                        UPDATE Event
+                        SET event_status = 'Completed'
+                        WHERE event_status = 'Approved' AND start_date = CAST(GETDATE() AS DATE)";
+                    using (var cmd = new SqlCommand(updateApproved, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error updating event statuses: {ex.Message}");
             }
         }
 

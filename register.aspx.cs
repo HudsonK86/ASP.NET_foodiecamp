@@ -188,7 +188,7 @@ namespace Hope
                  password, profile_image, user_role, is_activated, registered_date)
                 VALUES 
                 (@FirstName, @LastName, @Gender, @DateOfBirth, @Nationality, @Email, @PhoneNumber, 
-                 @Password, @UserRole, @IsActivated, @RegisteredDate);
+                 @Password, @ProfileImage, @UserRole, @IsActivated, @RegisteredDate);
                 SELECT SCOPE_IDENTITY();";
 
             using (SqlConnection conn = new SqlConnection(connectionString))

@@ -106,51 +106,51 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="events-grid">
                     </HeaderTemplate>
                     <ItemTemplate>
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden event-card mb-4">
-                            <div class="relative">
-                                <img src='<%# Eval("EventImageUrl") %>' alt='<%# Eval("EventTitle") %>' class="w-full h-48 object-cover" />
-                                <span class='<%# Eval("TimeBadgeClass") %> absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium'>
-                                    <%# Eval("TimeLabel") %>
-                                </span>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="event-title text-xl font-semibold text-gray-800 mb-3"><%# Eval("EventTitle") %></h3>
-                                <div class="event-details space-y-2 text-sm mb-4">
-                                    <p class="event-date text-gray-600">
-                                        <i class="fas fa-calendar mr-2 text-blue-600"></i>
-                                        <span class="date-value"><%# Eval("DateRange") %></span>
-                                    </p>
-                                    <p class="event-time text-gray-600">
-                                        <i class="fas fa-clock mr-2 text-blue-600"></i>
-                                        <span class="time-value"><%# Eval("TimeRange") %></span>
-                                    </p>
-                                    <p class="event-chef text-gray-600">
-                                        <i class="fas fa-user mr-2 text-blue-600"></i>
-                                        <span class="chef-name">Posted by <%# Eval("PostedBy") %></span>
-                                    </p>
-                                    <p class="event-participants text-gray-600">
-                                        <i class="fas fa-users mr-2 text-blue-600"></i>
-                                        <span class="participants-value"><%# Eval("ParticipantCount") %>/<%# Eval("MaxParticipant") %></span> participants
-                                    </p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <asp:LinkButton runat="server"
-                                        CommandName="View"
-                                        CommandArgument='<%# Eval("EnrollmentId") %>'
-                                        CssClass="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg text-center transition-colors">
-                                        View Details
-                                    </asp:LinkButton>
-                                    <asp:LinkButton runat="server"
-                                        CommandName="Cancel"
-                                        CommandArgument='<%# Eval("EnrollmentId") %>'
-                                        Visible='<%# Eval("IsUpcoming") %>'
-                                        CssClass="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors flex items-center justify-center"
-                                        CausesValidation="false">
-                                        Cancel
-                                    </asp:LinkButton>
-                                </div>
-                            </div>
-                        </div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden event-card mb-4 flex flex-col h-full" style="min-height: 400px;">
+        <div class="relative">
+            <img src='<%# Eval("EventImageUrl") %>' alt='<%# Eval("EventTitle") %>' class="w-full h-48 object-cover" />
+            <span class='<%# Eval("TimeBadgeClass") %> absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium'>
+                <%# Eval("TimeLabel") %>
+            </span>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+            <h3 class="event-title text-xl font-semibold text-gray-800 mb-3"><%# Eval("EventTitle") %></h3>
+            <div class="event-details space-y-2 text-sm mb-4">
+                <p class="event-date text-gray-600">
+                    <i class="fas fa-calendar mr-2 text-blue-600"></i>
+                    <span class="date-value"><%# Eval("DateRange") %></span>
+                </p>
+                <p class="event-time text-gray-600">
+                    <i class="fas fa-clock mr-2 text-blue-600"></i>
+                    <span class="time-value"><%# Eval("TimeRange") %></span>
+                </p>
+                <p class="event-chef text-gray-600">
+                    <i class="fas fa-user mr-2 text-blue-600"></i>
+                    <span class="chef-name">Posted by <%# Eval("PostedBy") %></span>
+                </p>
+                <p class="event-participants text-gray-600">
+                    <i class="fas fa-users mr-2 text-blue-600"></i>
+                    <span class="participants-value"><%# Eval("ParticipantCount") %>/<%# Eval("MaxParticipant") %></span> participants
+                </p>
+            </div>
+            <div class="flex space-x-2 mt-auto">
+                <asp:LinkButton runat="server"
+                    CommandName="View"
+                    CommandArgument='<%# Eval("EnrollmentId") %>'
+                    CssClass="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg text-center transition-colors">
+                    View Details
+                </asp:LinkButton>
+                <asp:LinkButton runat="server"
+                    CommandName="Cancel"
+                    CommandArgument='<%# Eval("EnrollmentId") %>'
+                    Visible='<%# Eval("IsUpcoming") %>'
+                    CssClass="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors flex items-center justify-center"
+                    CausesValidation="false">
+                    Cancel
+                </asp:LinkButton>
+            </div>
+        </div>
+    </div>
                     </ItemTemplate>
                 </asp:Repeater>
             </div>

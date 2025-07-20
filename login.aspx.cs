@@ -52,6 +52,19 @@ namespace Hope
                         Session["ProfileImage"] = authResult.User.ProfileImage; // For avatar display
                         Session["IsLoggedIn"] = true;
 
+                        // Update last_login_date in the database
+                        string cs = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+                        using (var conn = new SqlConnection(cs))
+                        {
+                            conn.Open();
+                            using (var cmd = new SqlCommand("UPDATE [User] SET last_login_date = @date WHERE user_id = @id", conn))
+                            {
+                                cmd.Parameters.AddWithValue("@date", DateTime.Now.Date);
+                                cmd.Parameters.AddWithValue("@id", authResult.User.UserId);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
                         // Add login success message
                         Session["LoginSuccess"] = $"Welcome back, {authResult.User.FirstName}! You have successfully logged in.";
 

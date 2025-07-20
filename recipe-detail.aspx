@@ -164,7 +164,16 @@
             <% } %>
             
             <!-- Action Buttons -->
-            <% if (Session["UserId"] != null && (Session["UserRole"] == null || Session["UserRole"].ToString() == "User")) { %>
+            <% 
+                bool isOwner = false;
+                if (Session["UserId"] != null && Recipe != null)
+                {
+                    int userId = 0;
+                    int.TryParse(Session["UserId"].ToString(), out userId);
+                    isOwner = (userId == Recipe.PostedByUserId); // You need to add PostedByUserId to your RecipeDetailModel and set it in LoadRecipe
+                }
+                if (Session["UserId"] != null && (Session["UserRole"] == null || Session["UserRole"].ToString() == "User") && !isOwner) { 
+            %>
                 <div class="flex flex-col md:flex-row gap-4 mb-8">
                     <asp:Button ID="CompletedBtn" runat="server"
                         CssClass='<%# IsCompleted ? "flex-1 bg-gray-400 text-white py-3 px-6 rounded-lg hover:bg-gray-500 transition duration-300 flex items-center justify-center" : "flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300 flex items-center justify-center" %>'

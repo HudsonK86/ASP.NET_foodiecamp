@@ -84,7 +84,8 @@ namespace Hope
                                 Carb = reader["carb"] != DBNull.Value ? Convert.ToInt32(reader["carb"]) : (int?)null,
                                 Fat = reader["fat"] != DBNull.Value ? Convert.ToInt32(reader["fat"]) : (int?)null,
                                 DateCreated = Convert.ToDateTime(reader["date_created"]),
-                                PostedBy = $"{reader["firstname"]} {reader["lastname"]}"
+                                PostedBy = $"{reader["firstname"]} {reader["lastname"]}",
+                                PostedByUserId = Convert.ToInt32(reader["user_id"]) // Add this line
                             };
                         }
                     }
@@ -351,6 +352,7 @@ namespace Hope
             public int? Fat { get; set; }
             public DateTime DateCreated { get; set; }
             public string PostedBy { get; set; }
+            public int PostedByUserId { get; set; } // Add this property
         }
 
         public class ReviewModel

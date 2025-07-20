@@ -132,7 +132,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="events-grid">
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <div class="bg-white rounded-lg shadow-md overflow-hidden event-card mb-4" data-status='<%# Eval("EventStatus").ToString().ToLower() %>'>
+                                <div class="bg-white rounded-lg shadow-md overflow-hidden event-card mb-4 flex flex-col h-full" style="min-height: 400px;">
                                     <div class="relative">
                                         <img src='<%# Eval("EventImageUrl") %>' alt='<%# Eval("EventTitle") %>' class="w-full h-48 object-cover" />
                                         <div class="absolute top-2 left-2">
@@ -148,7 +148,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="p-4">
+                                    <div class="p-4 flex flex-col flex-1">
                                         <h3 class="event-title text-xl font-semibold text-gray-800 mb-3"><%# Eval("EventTitle") %></h3>
                                         <div class="event-details space-y-2 text-sm mb-4">
                                             <p class="event-date text-gray-600">
@@ -168,7 +168,7 @@
                                                 <span class="participant-count"><%# Eval("ParticipantCount") %>/<%# Eval("MaxParticipant") %></span> participants
                                             </p>
                                         </div>
-                                        <div class="flex space-x-2">
+                                        <div class="flex space-x-2 mt-auto">
                                             <asp:LinkButton runat="server"
                                                 CommandName="View"
                                                 CommandArgument='<%# Eval("EventId") %>'

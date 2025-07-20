@@ -103,6 +103,8 @@
     <Content Include="css\recipe-details.css" />
     <Content Include="css\styles.css" />
     <Content Include="css\user-dashboard.css" />
+    <Content Include="edit-event.aspx" />
+    <Content Include="edit-recipe.aspx" />
     <Content Include="event-detail.aspx" />
     <Content Include="events.aspx" />
     <Content Include="forgot-password.aspx" />
@@ -215,6 +217,20 @@
     </Compile>
     <Compile Include="contact.aspx.designer.cs">
       <DependentUpon>contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="edit-event.aspx.cs">
+      <DependentUpon>edit-event.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="edit-event.aspx.designer.cs">
+      <DependentUpon>edit-event.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="edit-recipe.aspx.cs">
+      <DependentUpon>edit-recipe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="edit-recipe.aspx.designer.cs">
+      <DependentUpon>edit-recipe.aspx</DependentUpon>
     </Compile>
     <Compile Include="event-detail.aspx.cs">
       <DependentUpon>event-detail.aspx</DependentUpon>
@@ -435,6 +451,7 @@
     <None Include="packages.config" />
     <Content Include="Site.Master" />
     <None Include="Properties\PublishProfiles\foodiecamp - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\wappfoodiecamp - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

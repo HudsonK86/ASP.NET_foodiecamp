@@ -68,7 +68,7 @@
                 <div class="grid md:grid-cols-3 gap-8" id="events-container">
                     <asp:Repeater ID="HomeEventsRepeater" runat="server">
                         <ItemTemplate>
-                            <div class="event-card bg-white rounded-xl shadow-lg card-hover transition-all duration-300 relative" data-event-id='<%# Eval("EventId") %>'>
+                            <div class="event-card bg-white rounded-xl shadow-lg card-hover transition-all duration-300 flex flex-col h-full relative" style="min-height: 400px;">
                                 <img src='<%# Eval("EventImageUrl") %>' alt='<%# Eval("EventTitle") %>' class="event-image w-full h-40 object-cover rounded-t-xl" onerror="this.src='https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=250&fit=crop';" />
                                 <div class="absolute top-2 right-2 z-10">
                                     <span class='<%# Eval("TimeBadgeClass") %> px-2 py-1 rounded-full text-xs font-medium'>
@@ -76,7 +76,7 @@
                                         <%# Eval("TimeLabel") %>
                                     </span>
                                 </div>
-                                <div class="p-6">
+                                <div class="p-6 flex flex-col flex-1">
                                     <h3 class="event-title text-xl font-semibold text-gray-800 mb-3"><%# Eval("EventTitle") %></h3>
                                     <div class="event-details space-y-2 text-sm mb-4">
                                         <p class="event-date text-gray-600">
@@ -96,7 +96,7 @@
                                             <span class="participant-count"><%# Eval("ParticipantCount") %>/<%# Eval("MaxParticipant") %></span> participants
                                         </p>
                                     </div>
-                                    <div class="event-actions">
+                                    <div class="event-actions mt-auto">
                                         <a href='event-detail.aspx?id=<%# Eval("EventId") %>' class="event-link w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition block text-center">
                                             View Details
                                         </a>

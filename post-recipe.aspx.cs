@@ -83,11 +83,19 @@ namespace Hope
             using (var conn = new SqlConnection(cs))
             {
                 conn.Open();
+
+                // Determine recipe status based on user role
+                string recipeStatus = "Pending";
+                if (Session["UserRole"] != null && Session["UserRole"].ToString().Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    recipeStatus = "Approved";
+                }
+
                 string sql = @"
                     INSERT INTO Recipe
                     (user_id, cuisine_id, recipe_name, difficulty_level, cooking_time, servings, recipe_image, recipe_video, recipe_description, cooking_ingredient, cooking_instruction, calory, protein, carb, fat, recipe_status, recipe_visibility, date_created)
                     VALUES
-                    (@user_id, @cuisine_id, @recipe_name, @difficulty_level, @cooking_time, @servings, @recipe_image, @recipe_video, @recipe_description, @cooking_ingredient, @cooking_instruction, @calory, @protein, @carb, @fat, 'Pending', 'Hide', GETDATE())";
+                    (@user_id, @cuisine_id, @recipe_name, @difficulty_level, @cooking_time, @servings, @recipe_image, @recipe_video, @recipe_description, @cooking_ingredient, @cooking_instruction, @calory, @protein, @carb, @fat, @recipe_status, 'Show', GETDATE())";
                 using (var cmd = new SqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@user_id", userId);
@@ -105,6 +113,7 @@ namespace Hope
                     cmd.Parameters.AddWithValue("@protein", (object)protein ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@carb", (object)carb ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@fat", (object)fat ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@recipe_status", recipeStatus);
                     cmd.ExecuteNonQuery();
                 }
             }

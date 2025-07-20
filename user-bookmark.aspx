@@ -112,7 +112,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="bookmarks-grid">
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <div class="bg-white rounded-lg shadow-md overflow-hidden recipe-card mb-4">
+                                <div class="bg-white rounded-lg shadow-md overflow-hidden recipe-card mb-4 flex flex-col h-full" style="min-height: 400px;">
                                     <div class="relative">
                                         <img src='<%# Eval("RecipeImageUrl") %>' alt='<%# Eval("RecipeName") %>' class="w-full h-48 object-cover" />
                                         <span class="bg-white bg-opacity-90 text-gray-700 px-2 py-1 rounded-full text-xs font-medium absolute top-2 right-2 flex items-center">
@@ -121,7 +121,7 @@
                                         </span>
                                         <%# Eval("CompletedLabel") %>
                                     </div>
-                                    <div class="p-4">
+                                    <div class="p-4 flex flex-col flex-1">
                                         <h3 class="text-lg font-semibold text-gray-800 mb-2"><%# Eval("RecipeName") %></h3>
                                         <div class="flex items-center text-sm text-gray-600 mb-2">
                                             <i class="fas fa-user mr-2 text-blue-600"></i>
@@ -137,7 +137,7 @@
                                             </div>
                                             <span class="ml-2 text-gray-600 text-sm"><%# Eval("AverageRatingText") %></span>
                                         </div>
-                                        <div class="flex space-x-2">
+                                        <div class="flex space-x-2 mt-auto">
                                             <asp:LinkButton runat="server"
                                                 CommandName="View"
                                                 CommandArgument='<%# Eval("RecipeId") %>'

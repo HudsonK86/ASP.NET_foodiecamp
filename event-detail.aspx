@@ -134,9 +134,13 @@
                                         </p>
                                     <% } %>
                                 <% } else { %>
-                                    <p class="text-sm text-gray-500 mt-2 text-center">
-                                        <a href="login.aspx?returnUrl=<%= Server.UrlEncode(Request.RawUrl) %>" class="text-blue-600 underline">Login to register</a>
-                                    </p>
+                                    <div class="flex flex-col items-center justify-center mt-2">
+                                        <a href="login.aspx?returnUrl=<%= Server.UrlEncode(Request.RawUrl) %>"
+                                           class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105 text-center">
+                                            <i class="fas fa-sign-in-alt mr-2"></i>
+                                            Login to register
+                                        </a>
+                                    </div>
                                 <% } %>
                             <% } %>
                         </div>
@@ -154,29 +158,19 @@
                             <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
                             What You'll Learn
                         </h3>
-                        <ul class="space-y-2 text-gray-600">
-                            <% foreach (var item in Event.LearningObjectives) { %>
-                                <li class="flex items-start">
-                                    <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
-                                    <%= item %>
-                                </li>
-                            <% } %>
-                        </ul>
+                        <div class="text-gray-600" style="white-space:pre-line">
+        <%= string.Join("\n", Event.LearningObjectives) %>
+    </div>
                     </div>
                     <!-- What's Included -->
                     <div class="bg-white p-6 rounded-xl shadow-lg">
                         <h3 class="text-2xl font-bold text-gray-800 mb-4">
-                            <i class="fas fa-gift text-blue-600 mr-2"></i>
+                            <i class="fas fa-box-open text-blue-500 mr-2"></i>
                             What's Included
                         </h3>
-                        <ul class="space-y-2 text-gray-600">
-                            <% foreach (var item in Event.IncludedItems) { %>
-                                <li class="flex items-start">
-                                    <i class="fas fa-utensils text-blue-600 mr-2 mt-1"></i>
-                                    <%= item %>
-                                </li>
-                            <% } %>
-                        </ul>
+                        <div class="text-gray-600" style="white-space:pre-line">
+        <%= string.Join("\n", Event.IncludedItems) %>
+    </div>
                     </div>
                     <!-- Requirements -->
                     <div class="bg-white p-6 rounded-xl shadow-lg">
@@ -184,14 +178,9 @@
                             <i class="fas fa-info-circle text-orange-500 mr-2"></i>
                             Requirements
                         </h3>
-                        <ul class="space-y-2 text-gray-600">
-                            <% foreach (var item in Event.Requirements) { %>
-                                <li class="flex items-start">
-                                    <i class="fas fa-user-check text-orange-500 mr-2 mt-1"></i>
-                                    <%= item %>
-                                </li>
-                            <% } %>
-                        </ul>
+                        <div class="text-gray-600" style="white-space:pre-line">
+        <%= string.Join("\n", Event.Requirements) %>
+    </div>
                     </div>
                 </div>
             </div>

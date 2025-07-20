@@ -531,7 +531,13 @@
                                                         CssClass="text-blue-600 hover:text-blue-900">
                                                         <i class="fas fa-eye"></i> View
                                                     </asp:LinkButton>
-                                                    
+                                                    <asp:LinkButton ID="EditUserRecipeButton" runat="server"
+                                                        CommandName="EditRecipe"
+                                                        CommandArgument='<%# Eval("RecipeId") %>'
+                                                        CssClass="text-green-600 hover:text-green-900"
+                                                        Visible='<%# Eval("Status").ToString() == "Pending" || Eval("Status").ToString() == "Approved" %>'>
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </asp:LinkButton>
                                                     <asp:LinkButton ID="ApproveButton" runat="server" 
                                                         CommandName="ApproveRecipe" 
                                                         CommandArgument='<%# Eval("RecipeId") %>'
@@ -539,7 +545,6 @@
                                                         Visible='<%# Eval("Status").ToString() == "Pending" %>'>
                                                         <i class="fas fa-check"></i> Approve
                                                     </asp:LinkButton>
-                                                    
                                                     <asp:LinkButton ID="RejectButton" runat="server" 
                                                         CommandName="RejectRecipe" 
                                                         CommandArgument='<%# Eval("RecipeId") %>'

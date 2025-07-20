@@ -90,6 +90,14 @@ namespace Hope
                 return;
             }
 
+            // Ensure start date is at least 7 days after today
+            if (startDate < DateTime.Today.AddDays(7))
+            {
+                ErrorPanel.Visible = true;
+                ErrorLabel.Text = "The event start date must be at least 7 days from today.";
+                return;
+            }
+
             // Save image
             string imageName = Guid.NewGuid().ToString("N") + fileExt;
             string imagePath = Server.MapPath("~/images/events/" + imageName);
